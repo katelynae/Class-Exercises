@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Boilerplate</title>
+</head>
+<body>
+    <script>
+        console.log('You enter a dark room with two doors. Do you go through door #1 or #2?');
+
+        var door = prompt('> ');
+
+        if(door == "1") {
+            console.log('There\'s a giant bear here eating a cheesecake. What do you do?');
+            console.log('1. Take the cake.');
+            console.log('2. Scream at the bear.');
+
+            var bear = prompt('> ');
+
+            if(bear == '1')
+                console.log('The bear eats your face off. Good job!');
+            else if(bear == '2')
+                console.log('The bear eats your legs off. Good job!');
+            else
+                console.log(`Well, doing ${bear} is probably better. Bear runs away.`);
+        }
+
+        else if (door == '2'){
+            console.log('You stare intot he endless abyss at Cthuhlu\'s retina.');
+            console.log('1. Blueberries');
+            console.log('2. Yellow jacket clothespins.');
+            console.log('3. Understanding revolvers yelling melodies.');
+
+            var insanity = prompt('> ')
+
+            if(insanity == '1' || insanity == '2'){
+                console.log('Your body survives powered by a mind of jello. Good job!');
+            }
+            else {
+                console.log('The insanity rots your eyes into a pool of muck. Good job!');
+            }
+        }
+        else {
+            console.log('You stumble around and fall on a down a hole ( and die. Good job!');
+        }
+
+        console.log('A dragon suddenly appears! Choose a weapon:');
+        console.log('Sword');
+        console.log('Axe');
+        console.log('Flute');
+
+        var weapon = prompt('> ');
+
+        switch(weapon) {
+            case 'Sword':
+                console.log('The dragon melts the sword instantly, then swallows you whole.');
+                break;
+            case 'Axe':
+                console.log('You injure the dragon with your axe and it retreats.');
+                break;
+            case 'Flute':
+                console.log('This flute is magic, playing it tames the dragon who will now obey your instructions.');
+                break;
+            default:
+                console.log('You didn\'t choose a weapon, better start running.');
+        }
+    </script>    
+</body>
+</html>

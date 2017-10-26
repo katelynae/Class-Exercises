@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Boilerplate</title>
+</head>
+<body>
+    <script>
+        var count = prompt('Pick a number, any number');
+
+        while (count < 10){
+            console.log('number too low, pick another');
+            count = prompt('> ');
+        }
+        while (count > 10){
+            console.log('number too high, pick another');
+            count = prompt('> ');
+        }
+        if (count == 10){
+            console.log('You got it right! Well done.');
+        }
+
+
+
+    </script>    
+</body>
+</html>
