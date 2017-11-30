@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Traffic Light</title>
+
+<style>
+    body{
+        width: 70%;
+        margin: 0 auto;
+    }
+
+    #traffic_box {
+        width: 400px;
+        background-color: #58595b;
+        height: 800px;
+        margin: 20px;
+        border-radius: 15px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+    }
+    .traffic_light {
+        width: 300px;
+        height: 300px;
+        border: 2px solid #f2f2f2;
+        border-radius: 50%;
+        margin: 10px;
+        font-weight: bold;
+        font-size: 40px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        background-color: black;
+    }
+
+    .red{
+        background-color: red;
+    }
+
+    .green{
+        background-color: green;
+    }
+
+</style>
+</head>
+<body>
+    <div id="traffic_box">
+        <div class="red traffic_light">STOP</div>
+        <div class="traffic_light">GO</div>
+    </div>
+
+</body>
+<script>
+
+var redLight = document.getElementsByClassName('traffic_light')[0]; 
+var greenLight = document.getElementsByClassName('traffic_light')[1];
+ 
+function lightsGo(){
+    redLight.classList.remove('red');
+    greenLight.classList.add('green');
+}
+
+function lightsStop(){
+    redLight.classList.add('red');
+    greenLight.classList.remove('green');
+}
+
+redLight.onclick = lightsGo;
+greenLight.onclick = lightsStop;
+</script>
+
+</html>
