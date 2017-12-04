@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Caesar Cipher</title>
+
+<style>
+.container {
+    display: flex;
+    justify-content: center;
+}
+</style>
+</head>
+<body>
+    
+<div class="container">
+
+<h1>Caesar Cipher</h1>
+
+
+<form>
+<label for="select">Shift Characters by</label>
+<select name="select" id="shift"> 
+  <option selected>1</option> 
+  <option>2</option>
+  <option>3</option>
+  <option>4</option>
+  <option>5</option>
+  <option>6</option>
+  <option>7</option>
+  <option>8</option>
+  <option>9</option>
+  <option>10</option>
+  <option>11</option>
+  <option>12</option>
+  <option>13</option>
+  <option>14</option>
+  <option>15</option>
+  <option>16</option>
+  <option>17</option>
+  <option>18</option>
+  <option>19</option>
+  <option>20</option>
+  <option>21</option>
+  <option>22</option>
+  <option>23</option>
+  <option>24</option>
+  <option>25</option>
+</select>
+
+<label for="initial_text">Type Here</label>
+<input type="text" name="initial_text" id="text_input" />
+
+<button id="decipher">Decipher Text</button>
+<button id="cipher">Cipher Text</button>
+
+<label for="output_text">Translation</label>
+<output name="output_text" id="text_output"></output>
+</form>
+
+</div>
+
+</body>
+<script>
+
+var alphabet = ['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z'];
+var textOutput = document.getElementById('text_output');
+
+var decipherText = function(){
+    var text = document.getElementById('text_input').value.toLowerCase();
+    var select = document.getElementById("shift");
+    var shift= parseInt(select.options[select.selectedIndex].text);
+    var output = '';
+
+    for (var i = 0; i < text.length; i ++) {
+        var char = text[i];
+        var index = alphabet.indexOf(char);
+
+        if(index === -1){
+            char = char;
+        } else {
+            char = alphabet[(index + shift) % alphabet.length];
+        }   
+
+        output += char;
+    }
+
+    return textOutput.value = output;
+}
+
+var cipherText = function(){
+    var text = document.getElementById('text_input').value.toLowerCase();
+    var select = document.getElementById("shift");
+    var shift= parseInt(select.options[select.selectedIndex].text);
+    var output = '';
+
+    for (var i = 0; i < text.length; i ++) {
+        var char = text[i];
+        var index = alphabet.indexOf(char);
+
+        if(index === -1){
+            char = char;
+        } else {
+            char = alphabet[(index - shift) % alphabet.length];
+        }   
+
+        output += char;
+    }
+
+    return textOutput.value = output;
+}
+
+
+document.getElementById('decipher').addEventListener("click", decipherText);
+document.getElementById('cipher').addEventListener("click", cipherText);
+
+
+</script>
+
+</html>
