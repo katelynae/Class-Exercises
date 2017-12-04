@@ -83,7 +83,7 @@ var decipherText = function(){
         if(index === -1){
             char = char;
         } else {
-            char = alphabet[(index + shift) % alphabet.length];
+            char = alphabet[(index - shift) % alphabet.length];
         }   
 
         output += char;
@@ -105,7 +105,7 @@ var cipherText = function(){
         if(index === -1){
             char = char;
         } else {
-            char = alphabet[(index - shift) % alphabet.length];
+            char = alphabet[(index + shift) % alphabet.length];
         }   
 
         output += char;
