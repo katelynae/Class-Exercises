@@ -1,43 +1,45 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Card Reader</title>
 
-<style>
-.container {
-    display: flex;
-    justify-content: center;
-    flex-direction: column;
-}
-</style>
+    <style>
+        .container {
+            display: flex;
+            justify-content: center;
+            flex-direction: column;
+        }
+    </style>
 </head>
+
 <body>
-    
-<div class="container">
 
-<h1>Enter your Card Details:</h1>
+    <div class="container">
+
+        <h1>Enter your Card Details:</h1>
 
 
-<div id="payment_form">
-  <form>
-    <label for="name">Name on Card</label>
-    <input type="text" id="name">
+        <div id="payment_form">
+            <form>
+                <label for="name">Name on Card</label>
+                <input type="text" id="name">
 
-    <label for="card_number">Card Number</label>
-    <input type="text" id="card_number">
+                <label for="card_number">Card Number</label>
+                <input type="text" id="card_number">
 
-    <label for="cvv">CVV</label>
-    <input type="text" id="cvv">
+                <label for="cvv">CVV</label>
+                <input type="text" id="cvv">
 
-    <label for="card_type">Card Type</label>
-    <output id="card_type"></output>
+                <label for="card_type">Card Type</label>
+                <output id="card_type"></output>
 
-    <div id="expiry_date">
-        <label>Expiration Date</label>
-        <select id="month">
+                <div id="expiry_date">
+                    <label>Expiration Date</label>
+                    <select id="month">
             <option value="01">Jan</option>
             <option value="02">Feb</option>
             <option value="03">Mar</option>
@@ -51,7 +53,7 @@
             <option value="11">Nov</option>
             <option value="12">Dec</option>
         </select>
-        <select id="year">
+                    <select id="year">
             <option value="2016"> 2016</option>
             <option value="2017"> 2017</option>
             <option value="2018"> 2018</option>
@@ -60,70 +62,88 @@
             <option value="2021"> 2021</option>
             <option value="2022"> 2022</option>
         </select>
-    </div>
-  <div id="pay-now">
-      <button type="submit" id="confirm_purchase">Confirm</button>
-  </div>
-  </form>
+                </div>
+                <div id="pay-now">
+                    <button type="submit" id="confirm_purchase">Confirm</button>
+                </div>
+            </form>
 
-</div>
-</div>
+        </div>
+    </div>
 
 </body>
 <script>
 
-var validateCard = function(){
-  var card = {
-    cardName : document.getElementById('name').value,
-    cardNumber : document.getElementById('card_number').value,
-    cardCVV : document.getElementById('cvv').value,
-    expiryMonth : parseInt(document.getElementById('month').value),
-    expiryYear : parseInt(document.getElementById('year').value),
-    cardType : '',
-    validateType : function(){
-      var t = this.cardNumber.split('').map(Number);
-      if (t.length === 15 && t[0] === 3 && t[1] === 4 || t[1] === 7){
-        this.cardType = 'AMEX';
-      }else if (t.length >= 16 && t.length <= 19 && t.slice(0, 4) >= [3,5,2,8] && t.slice(0, 4) <= [3,5,8,9]){
-        this.cardType = 'JCB';
-      }else if (t.length === 16 && t[0] === 5 && t[1] >= 1 && t[1] <= 5 || t[0] === 2 && t[1] >= 2 && t[1] <= 7){
-        this.cardType = 'MASTER';
-      }else if (t.length >= 14 && t.length <= 19 && t[0] === 4){
-        this.cardType = 'VISA'
-      }else{
-        window.alert('The number you have entered is not a valid card type. Please try again.');
-      }
-      return this.cardType;
-    },
-    validateCVV : function(){
-      var c = this.cardCVV.split('').map(Number);
-      if (c.length === 3 && this.cardType === 'VISA' || this.cardType === 'JBC' || this.cardType === 'MASTER'){
-        console.log('valid cvv');
-      }else if (this.cardType = 'AMEX' && c.length === 4){
-        console.log('valid cvv');
-      }else {
-        console.log('invalid cvv');
-      } 
-    },
-    validateExpiry : function(){
-      var m = this.expiryMonth;
-      var y = this.expiryYear;
-      var today = new Date();
-      var cm = today.getUTCMonth();
-      var cy = today.getUTCFullYear();
-      if(m < cm || y < cy){
-        console.log('invalid expiry');
-      }else{
-        console.log('valid expiry');
-      }
+
+document.getElementById('card_number').addEventListener('blur', function(){
+    var card = getCard();
+    validateType(card);
+    console.log(card);      
+});
+document.getElementById('cvv').addEventListener('blur', function(){
+    var cvv = getCard();
+    validateCVV(cvv);     
+});
+document.getElementById('year').addEventListener('blur', function(){
+    var date = getCard();
+    validateExpiry(date);     
+});
+
+    var getCard = function () {
+        return {
+            cardName: document.getElementById('name').value,
+            cardNumber: document.getElementById('card_number').value,
+            cardCVV: document.getElementById('cvv').value,
+            expiryMonth: parseInt(document.getElementById('month').value),
+            expiryYear: parseInt(document.getElementById('year').value),
+            cardType: ""
+        }
     }
-  };
+    var validateType = function (card) {
+        var t = card.cardNumber.split('').map(Number);
+        if (t.length === 15 && t[0] === 3 && t[1] === 4 || t[1] === 7) {
+            card.cardType = 'AMEX';
+        } else if (t.length >= 16 && t.length <= 19 && t.slice(0, 4) >= [3, 5, 2, 8] && t.slice(0, 4) <= [3, 5, 8, 9]) {
+            card.cardType = 'JCB';
+        } else if (t.length === 16 && t[0] === 5 && t[1] >= 1 && t[1] <= 5 || t[0] === 2 && t[1] >= 2 && t[1] <= 7) {
+            card.cardType = 'MASTER';
+        } else if (t.length >= 14 && t.length <= 19 && t[0] === 4) {
+            card.cardType = 'VISA';
+        } else {
+            console.log('invalid card number');
+        }
+        return card.cardType;
+    }
+    var validateCVV = function(cvv) {
+        var validCVV = true;
+        var c = cvv.cardCVV.split('').map(Number);
+        if (c.length === 3 && cvv.cardType === 'VISA' || cvv.cardType === 'JBC' || cvv.cardType === 'MASTER') {
+            validCVV = true;
+        } else if (cvv.cardType = 'AMEX' && c.length === 4) {
+            validCVV = true;
+        } else {
+            validCVV = false;
+        }
+        console.log(validCVV);
+        return validCVV;
+    }
+    var validateExpiry = function(date) {
+            var validExpiry = true;
+            var m = date.expiryMonth;
+            var y = date.expiryYear;
+            var today = new Date();
+            var cm = today.getUTCMonth();
+            var cy = today.getUTCFullYear();
+            if (m < cm || y < cy) {
+                validExpiry = false;
+            } else {
+                validExpiry = true;
+            }
+            console.log(validExpiry)
+            return validExpiry;
+    }
 
-  card.validateType();
-  card.validateCVV();
-  card.validateExpiry();
-}
-
+    // document.getElementById('confirm_purchase').addEventListener('click', );
 
 </script>
 
