@@ -55,7 +55,6 @@
 <input type="text" name="initial_text" id="text_input" />
 
 <button id="decipher">Decipher Text</button>
-<button id="cipher">Cipher Text</button>
 
 <label for="output_text">Translation</label>
 <output name="output_text" id="text_output"></output>
@@ -83,28 +82,6 @@ var decipherText = function(){
         if(index === -1){
             char = char;
         } else {
-            char = alphabet[(index - shift) % alphabet.length];
-        }   
-
-        output += char;
-    }
-
-    return textOutput.value = output;
-}
-
-var cipherText = function(){
-    var text = document.getElementById('text_input').value.toLowerCase();
-    var select = document.getElementById("shift");
-    var shift= parseInt(select.options[select.selectedIndex].text);
-    var output = '';
-
-    for (var i = 0; i < text.length; i ++) {
-        var char = text[i];
-        var index = alphabet.indexOf(char);
-
-        if(index === -1){
-            char = char;
-        } else {
             char = alphabet[(index + shift) % alphabet.length];
         }   
 
@@ -116,7 +93,6 @@ var cipherText = function(){
 
 
 document.getElementById('decipher').addEventListener("click", decipherText);
-document.getElementById('cipher').addEventListener("click", cipherText);
 
 
 </script>
