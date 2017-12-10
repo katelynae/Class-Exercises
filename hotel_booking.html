@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Hotel Booking</title>
+
+    <style>
+        .container {
+            display: flex;
+            justify-content: center;
+            flex-direction: column;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h2>Hotel Bookings:</h2>
+
+    <div id='hotel_booking'>
+        <label for='hotels'>Select your hotel</label>
+        <select id='hotels'>
+          <option id='hotel1' selected>The Overlook Hotel</option>
+        </select>
+
+        <label for='rooms_left'>Rooms Remaining</label>
+        <output id='rooms_left'></output>
+
+        <label for='rooms_booked'>Rooms Reserved</label>
+        <output id='rooms_booked'></output>
+
+        <label for='rooms'>Select no. of rooms</label>
+          <select id='rooms'>
+            <option value='1' >1</option>
+            <option value='2'>2</option>
+            <option value='3'>3</option>
+            <option value='4'>4</option>
+            <option value='5'>5</option>
+          </select>
+
+        <button id='reserve_rooms'>Reserve Rooms</button>
+        <button id='unreserve_rooms'>Unreserve Rooms</button>
+    </div>
+
+</div>
+
+</body>
+<script>
+
+var hotel = {
+      name : 'The Overlook Hotel',
+      roomsTotal : 237,
+      roomsRemaining : 233,
+      roomsReserved : 4,
+      reserve : function(){
+        var rooms = document.getElementById('rooms');
+        var selectedRooms = parseInt(rooms.value);
+        if(hotel.roomsRemaining < selectedRooms){
+          window.alert('You\'ve selected more rooms than this hotel has avaliable. Please choose a lower amount.');
+        }else{
+            hotel.roomsRemaining -= selectedRooms;
+            hotel.roomsReserved += selectedRooms;
+            window.alert('You have successfully reserved '+selectedRooms+' rooms.');
+        }
+        console.log(hotel.roomsRemaining);
+        document.getElementById('rooms_left').innerText = hotel.roomsRemaining;
+        document.getElementById('rooms_booked').innerText = hotel.roomsReserved;
+      },
+      unreserve : function(){
+        var rooms = document.getElementById('rooms');
+        var selectedRooms = parseInt(rooms.value);
+        if(hotel.roomsReserved < selectedRooms){
+            window.alert('You are trying to unreserve more rooms than are currently reserved. Please choose a lower amount.');
+        } else{
+            hotel.roomsRemaining += selectedRooms;
+            hotel.roomsReserved -= selectedRooms;
+            window.alert('You have successfully unreserved '+selectedRooms+' rooms.');
+        }
+        document.getElementById('rooms_booked').innerText = hotel.roomsReserved;
+        document.getElementById('rooms_left').innerText = hotel.roomsRemaining;
+      }
+    };
+
+
+var roomsLeft = document.getElementById('rooms_left').innerText = 4;
+var roomsBooked = document.getElementById('rooms_booked').innerText = 233;
+
+document.getElementById('reserve_rooms').addEventListener('click', hotel.reserve);
+document.getElementById('unreserve_rooms').addEventListener('click', hotel.unreserve);
+
+
+    
+</script>
+
+</html>
