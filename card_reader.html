@@ -24,7 +24,7 @@
 
 
         <div id="payment_form">
-            <form>
+            <div>
                 <label for="name">Name on Card</label>
                 <input type="text" id="name">
 
@@ -65,7 +65,7 @@
                 <div id="pay-now">
                     <button type="submit" id="confirm_purchase">Confirm</button>
                 </div>
-            </form>
+            </div>
 
         </div>
     </div>
@@ -73,71 +73,81 @@
 </body>
 <script>
 
-function validateCard(validCard){
 
-    var card = {
+function validateCard(){
+
+        var card = {
         cardName: document.getElementById('name').value,
         cardNumber: document.getElementById('card_number').value,
         cardCVV: document.getElementById('cvv').value,
         expiryMonth: parseInt(document.getElementById('month').value),
         expiryYear: parseInt(document.getElementById('year').value),
         cardType: ""
-    }
+    };
 
-    validCard = true;
-
-    function validateType() {
+//check card type
         var t = card.cardNumber.split('').map(Number);
         if ((t.length === 15) && (t[0] === 3 && t[1] === 4) || (t[1] === 7)) {
             card.cardType = 'AMEX';
-            validCard = true;
         } else if ((t.length >= 16 && t.length <= 19) && (t.slice(0, 4) >= [3, 5, 2, 8]) && (t.slice(0, 4) <= [3, 5, 8, 9])) {
             card.cardType = 'JCB';
-            validCard = true;
         } else if ((t.length === 16) && (t[0] === 5 && t[1] >= 1 && t[1] <= 5) || (t[0] === 2 && t[1] >= 2 && t[1] <= 7)) {
             card.cardType = 'MASTER';
-            validCard = true;
         } else if ((t.length >= 14 && t.length <= 19) && (t[0] === 4)) {
             card.cardType = 'VISA';
         } else {
-            validCard = false;
+            console.log('failed card type');
+            return false;
         }
-        return validCard;
-    }
-
-    function validateCVV() {
+        console.log(card.cardType);
+// check card cvv is valid
         var c = card.cardCVV.split('').map(Number);
-        if (c.length === 3 && card.cardType === 'VISA' || card.cardType === 'JBC' || card.cardType === 'MASTER') {
-            validCard = true;
-        } else if (card.cardType = 'AMEX' && c.length === 4) {
-            validCard = true;
+        if (c.length === 3 && (card.cardType === 'VISA' || card.cardType === 'JBC' || card.cardType === 'MASTER')) {
+            c = c;
+        } else if (c.length === 4 && card.cardType === 'AMEX') {
+            c = c;
         } else {
-            validCard = false;
+            console.log('failed cvv');
+            return false;
         }
-        return validCard;
-    }
 
-    function validateExpiry() {
+// check expiry date is valid
         var m = card.expiryMonth;
         var y = card.expiryYear;
         var today = new Date();
         var cm = today.getUTCMonth();
         var cy = today.getUTCFullYear();
-        if (m < cm || y < cy) {
-            validCard = false;
-        } else {
-            validCard = true;
-        }
-        return validCard;
-    }
+        if (m < cm && y <= cy) {
+            console.log('failed expiry');
+            return false;
+        } 
 
-    console.log(validCard);
+    return true;
 }
 
-/*document.getElementById('confirm_purchase').addEventListener('click', function(){
+function confirmCard(){
 
+    if(validateCard()){
+        console.log('card is valid');
+    }else{
+        console.log('card is not valid');
+        return false;
+    }
+    return true;
 
-})*/
+}
+
+document.getElementById('card_number').addEventListener('blur', confirmCard);
+document.getElementById('cvv').addEventListener('blur', confirmCard);
+document.getElementById('year').addEventListener('blur', confirmCard);
+document.getElementById('confirm_purchase').addEventListener('click', function(){
+    if(confirmCard()){
+        console.log('success');
+    }else{
+        console.log('failed');
+    }
+});
+
 
     
 </script>
