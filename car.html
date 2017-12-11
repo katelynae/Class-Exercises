@@ -20,6 +20,18 @@
 
 <div class="container">
 
+<label for='miles_driven'>Miles Driven</label>
+<output id='miles_driven'>0</output>
+
+<label for='fuel'>Fuel Level</label>
+<output id='fuel'>30</output><span>litres</span>
+
+<label for='distance'>Miles to Drive</label>
+<input type='number' id='distance'/>
+
+<button id='start_car'>START</button>
+<button id='drive_car'>DRIVE</button>
+<button id='stop_car'>STOP</button>
 
 </div>
 
@@ -27,7 +39,11 @@
 <script>
 
 var car = {
-  
+    car_started : false,
+    car_stopped : true,
+    miles_driven : document.getElementById('miles_driven').value,
+    fuel_level : document.getElementById('fuel').value,
+    distance : document.getElementById('distance').value,
 }
     
 </script>

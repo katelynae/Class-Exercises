@@ -4,13 +4,98 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link href="https://fonts.googleapis.com/css?family=Amatic+SC" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
     <title>Caesar Cipher</title>
 
 <style>
+
 .container {
     display: flex;
     justify-content: center;
     flex-direction: column;
+    align-items: center;
+    color: #444444;
+    font-family: 'Amatic SC', cursive;
+
+}
+
+h1{
+  border-bottom: 2px solid #00a0e3;
+  width: 30%;
+  text-align: center;
+  padding: 5px;
+  font-size: 36px;
+}
+
+select {
+  border: none;
+  background-color: #eee;
+  font-size: 16px;
+}
+
+#fancy_input {
+  margin: 40px 3%; 
+  position: relative;
+}
+
+input#text_input {
+  border: 0; 
+  padding: 4px 0; 
+  border-bottom: 1px solid #eee; 
+  background-color: transparent;
+  width: 80%;
+}
+#text_input ~ .focus-border{
+  position: absolute; 
+  bottom: 0; 
+  left: 0; 
+  width: 0; 
+  height: 2px; 
+  background-color: #3399ff; 
+  transition: 0.4s;
+}
+
+#text_input:focus ~ .focus-border,
+.has-content#text_input ~ .focus-border{
+  width: 100%; 
+  transition: 0.4s;
+}
+#text_input ~ label{
+  position: absolute; 
+  left: 0; 
+  width: 100%; 
+  color: #00a0e3; 
+  transition: 0.3s; 
+  z-index: -1; 
+  letter-spacing: 0.5px;
+}
+#text_input:focus ~ label, .has-content#text_input ~ label{
+  top: -16px; 
+  font-size: 16px; 
+  color: #3399ff; 
+  transition: 0.3s;
+}
+
+#decoder_form {
+  text-align:center;
+  font-size: 22px;
+  width: 40%;
+}
+
+#translation {
+  margin: 10px 0;
+  background-color: #eee;
+  min-height: 100px;
+  padding: 10px 0;
+}
+#translation h3 {
+  margin: 5px 0;
+}
+#translation output {
+  color: #00a0e3;
+  font-weight: bold;
 }
 </style>
 </head>
@@ -21,8 +106,8 @@
 <h1>Caesar Cipher</h1>
 
 
-<div>
-<label for="select">Shift Characters by</label>
+<div id="decoder_form">
+<label for="select">Set Character Shift</label>
 <select name="select" id="shift"> 
   <option selected>1</option> 
   <option>2</option>
@@ -51,13 +136,18 @@
   <option>25</option>
 </select>
 
-<label for="initial_text">Type Here</label>
-<input type="text" name="initial_text" id="text_input" />
 
-<button id="decipher">Decipher Text</button>
+<div id="fancy_input">
+  <input type="text" name="initial_text" id="text_input" placeholder=""/>
+  <label>Start Typing Here</label>
+  <span class="focus_border"></span>
+</div>
 
-<label for="output_text">Translation</label>
-<output name="output_text" id="text_output"></output>
+
+<div id="translation">
+  <h3>Translation</h3>
+  <output name="output_text" id="text_output"></output>
+</div>
 
 </div>
 
@@ -92,7 +182,20 @@ var decipherText = function(){
 }
 
 
-document.getElementById('decipher').addEventListener("click", decipherText);
+document.getElementById('text_input').addEventListener("keyup", decipherText);
+
+
+$(window).load(function(){
+    $("#text_input").val("");
+    
+    $("#text_input").focusout(function(){
+      if($(this).val() != ""){
+        $(this).addClass("has-content");
+      }else{
+        $(this).removeClass("has-content");
+      }
+    })
+  });
 
 
 </script>
