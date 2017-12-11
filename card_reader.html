@@ -7,11 +7,16 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Card Reader</title>
 
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
     <style>
         .container {
             display: flex;
             justify-content: center;
             flex-direction: column;
+        }
+        .hidden{
+            display: none;
         }
     </style>
 </head>
@@ -24,7 +29,7 @@
 
 
         <div id="payment_form">
-            <div>
+            <div class="card_details">
                 <label for="name">Name on Card</label>
                 <input type="text" id="name">
 
@@ -33,41 +38,47 @@
 
                 <label for="cvv">CVV</label>
                 <input type="text" id="cvv">
-
-                <label for="card_type">Card Type</label>
-                <output id="card_type"></output>
-
+            </div>
                 <div id="expiry_date">
                     <label>Expiration Date</label>
                     <select id="month">
-            <option value="01">Jan</option>
-            <option value="02">Feb</option>
-            <option value="03">Mar</option>
-            <option value="04">Apr</option>
-            <option value="05">May</option>
-            <option value="06">June</option>
-            <option value="07">July</option>
-            <option value="08">Aug</option>
-            <option value="09">Sep</option>
-            <option value="10">Oct</option>
-            <option value="11">Nov</option>
-            <option value="12">Dec</option>
-        </select>
-                    <select id="year">
-            <option value="2017"> 2017</option>
-            <option value="2018"> 2018</option>
-            <option value="2019"> 2019</option>
-            <option value="2020"> 2020</option>
-            <option value="2021"> 2021</option>
-            <option value="2022"> 2022</option>
-        </select>
+                        <option value="01">Jan</option>
+                        <option value="02">Feb</option>
+                        <option value="03">Mar</option>
+                        <option value="04">Apr</option>
+                        <option value="05">May</option>
+                        <option value="06">June</option>
+                        <option value="07">July</option>
+                        <option value="08">Aug</option>
+                        <option value="09">Sep</option>
+                        <option value="10">Oct</option>
+                        <option value="11">Nov</option>
+                        <option value="12">Dec</option>
+                    </select>
+                                <select id="year">
+                        <option value="2017"> 2017</option>
+                        <option value="2018"> 2018</option>
+                        <option value="2019"> 2019</option>
+                        <option value="2020"> 2020</option>
+                        <option value="2021"> 2021</option>
+                        <option value="2022"> 2022</option>
+                    </select>
                 </div>
-                <div id="pay-now">
-                    <button type="submit" id="confirm_purchase">Confirm</button>
-                </div>
+            <div id="pay-now">
+                <button type="submit" id="confirm_purchase">Confirm</button>
             </div>
 
         </div>
+
+        <div id="confirmation_box" class="hidden">
+            <h3>Please check your card details are correct and click 'Confirm'.</h3>
+            <p id="cloned_details">
+
+            </p>
+            <button id="confirm_details">Confirm</button>
+            <button id="cancel">Cancel</button>
+        </div>
+
     </div>
 
 </body>
@@ -82,8 +93,16 @@ function validateCard(){
         cardCVV: document.getElementById('cvv').value,
         expiryMonth: parseInt(document.getElementById('month').value),
         expiryYear: parseInt(document.getElementById('year').value),
-        cardType: ""
+        cardType: "",
+        failedReason: ''
     };
+
+// check name
+        var n = card.cardName.split('');
+        if(n.length <= 0){
+            console.log('failed name');
+            return false;
+        }
 
 //check card type
         var t = card.cardNumber.split('').map(Number);
@@ -129,23 +148,38 @@ function confirmCard(){
 
     if(validateCard()){
         console.log('card is valid');
+        var clones = $('.card_details').clone();
+
+        $('#confirmation_box').removeClass('hidden');
+        $('#cloned_details').append(clones);
+        $('#cloned_details input').each(function(){
+            var id = $(this).attr('id');
+            $(this).replaceWith(function(){
+                return '<output id="c_'+this.id+'">'+this.value+'</output>'
+            });
+        });
+        var hiddenDigits = $('#c_card_number').val().substring(0,11);
+        $(hiddenDigits).replaceWith('*');
     }else{
-        console.log('card is not valid');
+        window.alert('Oops! There appears to be a problem with your card details please review and try again.')
         return false;
     }
     return true;
 
 }
 
-document.getElementById('card_number').addEventListener('blur', confirmCard);
-document.getElementById('cvv').addEventListener('blur', confirmCard);
-document.getElementById('year').addEventListener('blur', confirmCard);
-document.getElementById('confirm_purchase').addEventListener('click', function(){
-    if(confirmCard()){
-        console.log('success');
-    }else{
-        console.log('failed');
-    }
+
+document.getElementById('confirm_purchase').addEventListener('click', confirmCard);
+
+document.getElementById('confirm_details').addEventListener('click', function(){
+    $('#confirmation_box').addClass('hidden');
+    $('#cloned_details').empty();
+    window.alert('Your details have been confirmed. Thank you for your purchase.');
+});
+
+document.getElementById('cancel').addEventListener('click', function(){
+    $('#confirmation_box').addClass('hidden');
+    $('#cloned_details').empty();
 });
 
 
