@@ -14,10 +14,19 @@
             display: flex;
             justify-content: center;
             flex-direction: column;
+            align-items: center;
         }
         .hidden{
             display: none;
         }
+        .card_details {
+            display: flex;
+            flex-direction: column;
+        }
+        .error{
+            border-color: red;
+        }
+
     </style>
 </head>
 
@@ -31,17 +40,23 @@
         <div id="payment_form">
             <div class="card_details">
                 <label for="name">Name on Card</label>
-                <input type="text" id="name">
+                <input type="text" class="form_input" id="name">
 
                 <label for="card_number">Card Number</label>
-                <input type="text" id="card_number">
+                <input type="text" class="form_input" id="card_number">
+                <div id="card_types">
+                    <span class="card" id="visa">VISA</span>
+                    <span class="card" id="master">MASTER CARD</span>
+                    <span class="card" id="amex">AMEX</span>
+                    <span class="card" id="jcb">JCB</span>
+                </div>
 
                 <label for="cvv">CVV</label>
-                <input type="text" id="cvv">
+                <input type="text" class="form_input" id="cvv">
             </div>
                 <div id="expiry_date">
                     <label>Expiration Date</label>
-                    <select id="month">
+                    <select class="form_input" id="month">
                         <option value="01">Jan</option>
                         <option value="02">Feb</option>
                         <option value="03">Mar</option>
@@ -55,7 +70,7 @@
                         <option value="11">Nov</option>
                         <option value="12">Dec</option>
                     </select>
-                                <select id="year">
+                    <select class="form_input" id="year">
                         <option value="2017"> 2017</option>
                         <option value="2018"> 2018</option>
                         <option value="2019"> 2019</option>
@@ -71,12 +86,14 @@
         </div>
 
         <div id="confirmation_box" class="hidden">
-            <h3>Please check your card details are correct and click 'Confirm'.</h3>
-            <p id="cloned_details">
+            <div class="confirmation_container">
+                <h3>Please check your card details are correct and click 'Confirm'.</h3>
+                <p id="cloned_details">
 
-            </p>
-            <button id="confirm_details">Confirm</button>
-            <button id="cancel">Cancel</button>
+                </p>
+                <button id="confirm_details">Confirm</button>
+                <button id="cancel">Cancel</button>
+            </div>
         </div>
 
     </div>
@@ -101,21 +118,30 @@ function validateCard(){
         var n = card.cardName.split('');
         if(n.length <= 0){
             console.log('failed name');
+            $('#name').addClass('error');
             return false;
+        }else{
+            $('#name').removeClass('error');
         }
 
 //check card type
         var t = card.cardNumber.split('').map(Number);
         if ((t.length === 15) && (t[0] === 3 && t[1] === 4) || (t[1] === 7)) {
             card.cardType = 'AMEX';
+            $('#card_number').removeClass('error');
+        
         } else if ((t.length >= 16 && t.length <= 19) && (t.slice(0, 4) >= [3, 5, 2, 8]) && (t.slice(0, 4) <= [3, 5, 8, 9])) {
             card.cardType = 'JCB';
+            $('#card_number').removeClass('error');
         } else if ((t.length === 16) && (t[0] === 5 && t[1] >= 1 && t[1] <= 5) || (t[0] === 2 && t[1] >= 2 && t[1] <= 7)) {
             card.cardType = 'MASTER';
+            $('#card_number').removeClass('error');
         } else if ((t.length >= 14 && t.length <= 19) && (t[0] === 4)) {
             card.cardType = 'VISA';
+            $('#card_number').removeClass('error');
         } else {
             console.log('failed card type');
+            $('#card_number').addClass('error');
             return false;
         }
         console.log(card.cardType);
@@ -123,10 +149,13 @@ function validateCard(){
         var c = card.cardCVV.split('').map(Number);
         if (c.length === 3 && (card.cardType === 'VISA' || card.cardType === 'JBC' || card.cardType === 'MASTER')) {
             c = c;
+            $('#cvv').removeClass('error');
         } else if (c.length === 4 && card.cardType === 'AMEX') {
             c = c;
+            $('#cvv').removeClass('error');
         } else {
             console.log('failed cvv');
+            $('#cvv').addClass('error');
             return false;
         }
 
@@ -138,8 +167,11 @@ function validateCard(){
         var cy = today.getUTCFullYear();
         if (m < cm && y <= cy) {
             console.log('failed expiry');
+            $('#month, #year').addClass('error');
             return false;
-        } 
+        } else{
+            $('#month, #year').removeClass('error');
+        }
 
     return true;
 }
@@ -168,6 +200,10 @@ function confirmCard(){
 
 }
 
+var inputs = document.querySelectorAll('.form_input');
+for(var i=0;i<inputs.length;i++){
+    inputs[i].addEventListener('blur',validateCard);
+}
 
 document.getElementById('confirm_purchase').addEventListener('click', confirmCard);
 
