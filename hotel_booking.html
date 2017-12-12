@@ -5,13 +5,34 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Hotel Booking</title>
+    <title>Hotel Bookings</title>
 
     <style>
+        body{
+            background-color: #e6b3b3;
+        }
         .container {
             display: flex;
             justify-content: center;
             flex-direction: column;
+            align-items: center;
+            width: 60%;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 25px;
+            border: 4px solid #602020;
+            border-radius: 10px;
+        }
+        #booking_form {
+            display: flex;
+            flex-direction: column;
+            text-align: center;
+        }
+        label {
+            margin: 5px 0;
+        }
+        .button_group{
+            margin: 10px 0;
         }
     </style>
 </head>
@@ -20,9 +41,9 @@
 
 <div class="container">
 
-    <h2>Hotel Bookings:</h2>
+    <h2>Bookings:</h2>
 
-    <div id='hotel_booking'>
+    <div id='booking_form'>
         <label for='hotels'>Select your hotel</label>
         <select id='hotels'>
           <option id='hotel1' selected>The Overlook Hotel</option>
@@ -42,9 +63,10 @@
             <option value='4'>4</option>
             <option value='5'>5</option>
           </select>
-
-        <button id='reserve_rooms'>Reserve Rooms</button>
-        <button id='unreserve_rooms'>Unreserve Rooms</button>
+        <div class='button_group'>
+            <button id='reserve_rooms'>Reserve Rooms</button>
+            <button id='unreserve_rooms'>Unreserve Rooms</button>
+        </div>
     </div>
 
 </div>

@@ -5,11 +5,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
     <title>Card Reader</title>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 
     <style>
+
+        body{
+            font-size: 16px;
+            font-family: 'Lato', sans-serif;
+        }
         .container {
             display: flex;
             justify-content: center;
@@ -17,16 +23,79 @@
             align-items: center;
         }
         .hidden{
-            display: none;
+            display: none!important;
         }
         .card_details {
             display: flex;
             flex-direction: column;
         }
+        .form_input{
+            border: 1px solid #00a0e3;
+            border-radius: 5px;
+            font-size: 16px;
+            margin: 5px 0;
+        }
+        label{
+            margin-top: 10px;
+        }
         .error{
-            border-color: red;
+            box-shadow: 0px 0px 15px #ff9999;
+            border: 1px solid #cc0000;
+        }
+        .validated{
+            box-shadow: 0px 0px 15px #bfff80;
+            border: 1px solid #4d9900;
+        }
+        .type_confirmed{
+            font-weight: bold;
+            font-size: 18px;
+            color: #00a0e3;
+            background-color: #e6f7ff!important;
+            border-color: #00a0e3!important;
         }
 
+        button {
+            width: 100px;
+            font-size: 18px;
+            font-weight: bold;
+            border: 1px solid #00a0e3;
+            background: transparent;
+            border-radius: 5px;
+            color: #00a0e3;
+            margin: 10px 0;
+        }
+        button:hover {
+            background: #00a0e3;
+            color: #fff;
+            cursor: pointer;
+        }
+
+        #card_types {
+            margin: 10px 0;
+        }
+        .card{
+            border: 1px solid #888888;
+            padding: 5px;
+            border-radius: 5px;
+            background-color: #f2f2f2;
+        }
+        #confirmation_box {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: rgba(0,0,0,0.5);
+        }
+        .confirmation_container {
+            background-color: #fff;
+            width: 50%;
+            padding: 20px;
+            border-radius: 10px;
+            border: 1px solid #00a0e3;
+            text-align: center;
+        }
     </style>
 </head>
 
@@ -80,7 +149,7 @@
                     </select>
                 </div>
             <div id="pay-now">
-                <button type="submit" id="confirm_purchase">Confirm</button>
+                <button type="submit" id="confirm_purchase">Proceed</button>
             </div>
 
         </div>
@@ -101,6 +170,88 @@
 </body>
 <script>
 
+// check name
+function validateName(card){
+        var n = card.cardName.split('');
+        $('#name').removeClass('error validated');
+        if(n.length <= 0){
+            console.log('failed name');
+            $('#name').addClass('error');
+            return false;
+        }else{
+            $('#name').addClass('validated');
+        }
+    return true;
+}
+
+//check card type
+function validateType(card){
+        var t = card.cardNumber.split('').map(Number);
+        $('#card_number').removeClass('error validated');
+        $('.card').removeClass('type_confirmed');
+        if ((t.length === 15) && (t[0] === 3 && t[1] === 4) || (t[1] === 7)) {
+            card.cardType = 'AMEX';
+            $('#card_number').addClass('validated');
+            $('#amex').addClass('type_confirmed');
+        } else if ((t.length >= 16 && t.length <= 19) && (t.slice(0, 4) >= [3, 5, 2, 8]) && (t.slice(0, 4) <= [3, 5, 8, 9])) {
+            card.cardType = 'JCB';
+            $('#card_number').addClass('validated');
+            $('#jcb').addClass('type_confirmed');
+        } else if ((t.length === 16) && (t[0] === 5 && t[1] >= 1 && t[1] <= 5) || (t[0] === 2 && t[1] >= 2 && t[1] <= 7)) {
+            card.cardType = 'MASTER';
+            $('#card_number').addClass('validated');
+            $('#master').addClass('type_confirmed');
+        } else if ((t.length >= 14 && t.length <= 19) && (t[0] === 4)) {
+            card.cardType = 'VISA';
+            $('#card_number').addClass('validated');
+            $('#visa').addClass('type_confirmed');
+        } else {
+            console.log('failed card type');
+            $('#card_number').addClass('error');
+            return false;
+        }
+    console.log(card.cardType);
+    return true;
+}
+
+// check card cvv is valid
+function validateCVV(card){
+        var c = card.cardCVV.split('').map(Number);
+        $('#cvv').removeClass('error validated');
+        if (c.length === 3 && (card.cardType === 'VISA' || card.cardType === 'JBC' || card.cardType === 'MASTER')) {
+            c = c;
+            $('#cvv').addClass('validated');
+        } else if (c.length === 4 && card.cardType === 'AMEX') {
+            c = c;
+            $('#cvv').addClass('validated');
+        } else {
+            console.log('failed cvv');
+            $('#cvv').addClass('error');
+            return false;
+        }
+    return true;
+}
+
+// check expiry date is valid
+function validateExpiry(card){
+        $('#month').removeClass('error validated');
+        $('#year').removeClass('error validated');
+        var m = card.expiryMonth;
+        var y = card.expiryYear;
+        var today = new Date();
+        var cm = today.getUTCMonth();
+        var cy = today.getUTCFullYear();
+        if (m < cm && y <= cy) {
+            console.log('failed expiry');
+            $('#month').addClass('error');
+            $('#year').addClass('error');
+            return false;
+        } else{
+            $('#month').addClass('validated');
+            $('#year').addClass('validated');  
+        }
+    return true;   
+}
 
 function validateCard(){
 
@@ -110,68 +261,14 @@ function validateCard(){
         cardCVV: document.getElementById('cvv').value,
         expiryMonth: parseInt(document.getElementById('month').value),
         expiryYear: parseInt(document.getElementById('year').value),
-        cardType: "",
-        failedReason: ''
+        cardType: ""
     };
 
-// check name
-        var n = card.cardName.split('');
-        if(n.length <= 0){
-            console.log('failed name');
-            $('#name').addClass('error');
-            return false;
-        }else{
-            $('#name').removeClass('error');
-        }
-
-//check card type
-        var t = card.cardNumber.split('').map(Number);
-        if ((t.length === 15) && (t[0] === 3 && t[1] === 4) || (t[1] === 7)) {
-            card.cardType = 'AMEX';
-            $('#card_number').removeClass('error');
-        
-        } else if ((t.length >= 16 && t.length <= 19) && (t.slice(0, 4) >= [3, 5, 2, 8]) && (t.slice(0, 4) <= [3, 5, 8, 9])) {
-            card.cardType = 'JCB';
-            $('#card_number').removeClass('error');
-        } else if ((t.length === 16) && (t[0] === 5 && t[1] >= 1 && t[1] <= 5) || (t[0] === 2 && t[1] >= 2 && t[1] <= 7)) {
-            card.cardType = 'MASTER';
-            $('#card_number').removeClass('error');
-        } else if ((t.length >= 14 && t.length <= 19) && (t[0] === 4)) {
-            card.cardType = 'VISA';
-            $('#card_number').removeClass('error');
-        } else {
-            console.log('failed card type');
-            $('#card_number').addClass('error');
-            return false;
-        }
-        console.log(card.cardType);
-// check card cvv is valid
-        var c = card.cardCVV.split('').map(Number);
-        if (c.length === 3 && (card.cardType === 'VISA' || card.cardType === 'JBC' || card.cardType === 'MASTER')) {
-            c = c;
-            $('#cvv').removeClass('error');
-        } else if (c.length === 4 && card.cardType === 'AMEX') {
-            c = c;
-            $('#cvv').removeClass('error');
-        } else {
-            console.log('failed cvv');
-            $('#cvv').addClass('error');
-            return false;
-        }
-
-// check expiry date is valid
-        var m = card.expiryMonth;
-        var y = card.expiryYear;
-        var today = new Date();
-        var cm = today.getUTCMonth();
-        var cy = today.getUTCFullYear();
-        if (m < cm && y <= cy) {
-            console.log('failed expiry');
-            $('#month, #year').addClass('error');
-            return false;
-        } else{
-            $('#month, #year').removeClass('error');
-        }
+    if(validateName(card) && validateType(card) && validateCVV(card) && validateExpiry(card)){
+        return true;
+    }else {
+        return false;
+    }
 
     return true;
 }
@@ -200,6 +297,7 @@ function confirmCard(){
 
 }
 
+//runs validation function for inputs on blur
 var inputs = document.querySelectorAll('.form_input');
 for(var i=0;i<inputs.length;i++){
     inputs[i].addEventListener('blur',validateCard);
