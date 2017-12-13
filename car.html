@@ -40,12 +40,14 @@
 </body>
 <script>
 
+
+
 var car = {
     on : false,
     off : true,
     km_driven : 0,
-    fuel_level : parseInt(document.getElementById('fuel').value),
-    distance : document.getElementById('distance').value/100,
+    fuel_level : 30,
+    distance : 0,
     startCar : function(){
         if(car.on){
             window.alert('The car is already on, start driving!');
@@ -63,15 +65,24 @@ var car = {
         }
     },
     driveCar: function(){ 
-        if(car.distance < car.fuel_level && car.on){
-            car.fuel_level -= car.distance;
-            car.km_driven += car.distance; 
-        }else{
-            window.alert('The car must be on before you can start driving!');
+        var num = Math.floor(document.getElementById('distance').value);
+        var km = (num*16.5)/100;
+        if(km < car.fuel_level && car.on){
+            console.log(km);
+            car.fuel_level =  car.fuel_level - km;
+            car.km_driven = car.km_driven + num; 
+
+            document.getElementById('fuel').innerText = car.fuel_level;
+            document.getElementById('km_driven').innerText = car.km_driven;
+        }else if(car.off){
+            window.alert('The car is off, you must turn it on before you can start driving!');
+        }else if(km > car.fuel_level){
+            window.alert('You need more fuel to travel the distance entered. Refuel first, or try a lesser distance.');
         }
     },
     refuel: function(){
         car.fuel_level = 30;
+        document.getElementById('fuel').innerText = 30;
         window.alert('You\'re refueled and ready to go!');
     }
 
@@ -80,6 +91,7 @@ var car = {
 document.getElementById('start_car').addEventListener('click',car.startCar);
 document.getElementById('stop_car').addEventListener('click',car.stopCar);
 document.getElementById('drive_car').addEventListener('click',car.driveCar);
+document.getElementById('refuel').addEventListener('click',car.refuel);
 
     
 </script>
