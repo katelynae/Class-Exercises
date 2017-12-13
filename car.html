@@ -8,12 +8,35 @@
     <title>CAR</title>
 
     <style>
-        .container {
-            display: flex;
-            justify-content: center;
-            flex-direction: column;
-            align-items: center;
-        }
+
+    body{
+        background: url(road-bg.jpg) no-repeat center;
+        background-size: cover;
+        position: relative;
+    }
+    .container {
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+        align-items: center;
+    }
+    #drive_input{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        position: absolute;
+        margin: 25px;
+        top: 50px;
+    }
+    #car_panel{
+        position: fixed;
+        top: 65%;
+        background-color: #58595b;
+        width: 100%;
+        height: 100%;
+        text-align: center;
+        padding: 25px;
+    }
     </style>
 </head>
 
@@ -21,19 +44,25 @@
 
 <div class="container">
 
-<label for='km_driven'>Kilometers Driven</label>
-<output id='km_driven'>0</output><span>km</span>
+<div id='drive_input'>
+    <label for='distance'>How far do you want to drive?</label>
+    <input type='number' id='distance'/><span>Enter distance in km</span>
+</div>
 
-<label for='fuel'>Fuel Level</label>
-<output id='fuel'>30</output><span>litres</span>
+<div id='car_panel'>
+    <div id='stats'>
+        <label for='km_driven'>Kilometers Driven</label>
+        <output id='km_driven'>0</output><span>km</span>
 
-<label for='distance'>How far do you want to drive?</label>
-<input type='number' id='distance'/><span>Enter distance in km</span>
+        <label for='fuel'>Fuel Level</label>
+        <output id='fuel'>30</output><span>litres</span>
+    </div>
 
-<button id='start_car'>START</button>
-<button id='drive_car'>DRIVE</button>
-<button id='stop_car'>STOP</button>
-<button id='refuel'>REFUEL</button>
+    <button id='start_car'>ON</button>
+    <button id='stop_car'>OFF</button>
+    <button id='drive_car'>DRIVE</button>
+    <button id='refuel'>REFUEL</button>
+</div>
 
 </div>
 
