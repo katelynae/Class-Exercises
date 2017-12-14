@@ -5,6 +5,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Press+Start+2P" rel="stylesheet">
     <title>CAR</title>
 
     <style>
@@ -13,6 +16,24 @@
         background: url(road-bg.jpg) no-repeat center;
         background-size: cover;
         position: relative;
+        font-family: 'Lato', sans-serif;
+    }
+    button {
+        border: 1px solid #555555;
+        padding: 15px;
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        font-size: 18px;
+        text-align: center;
+        font-weight: bold;
+        background: rgb(216,216,216); /* Old browsers */
+        background: -moz-linear-gradient(top, rgba(216,216,216,1) 0%, rgba(165,165,165,1) 45%, rgba(124,124,124,1) 100%); /* FF3.6-15 */
+        background: -webkit-linear-gradient(top, rgba(216,216,216,1) 0%,rgba(165,165,165,1) 45%,rgba(124,124,124,1) 100%); /* Chrome10-25,Safari5.1-6 */
+        background: linear-gradient(to bottom, rgba(216,216,216,1) 0%,rgba(165,165,165,1) 45%,rgba(124,124,124,1) 100%);
+    }
+    button:focus{
+        outline: none;
     }
     .container {
         display: flex;
@@ -27,6 +48,9 @@
         position: absolute;
         margin: 25px;
         top: 50px;
+        padding: 20px;
+        background-color: rgba(255,255,255,0.5);
+        border-radius: 10px;
     }
     #car_panel{
         position: fixed;
@@ -36,6 +60,47 @@
         height: 100%;
         text-align: center;
         padding: 25px;
+    }
+    #stats{
+        width: 60%;
+        margin: 15px auto;
+        background-color: #d1ccc7;
+        border-radius: 10px;
+        border: 1px solid #555555;
+        padding: 20px;
+        font-size: 18px;
+        background: rgb(216,216,216); /* Old browsers */
+        background: -moz-linear-gradient(top, rgba(216,216,216,1) 0%, rgba(165,165,165,1) 45%, rgba(124,124,124,1) 100%); /* FF3.6-15 */
+        background: -webkit-linear-gradient(top, rgba(216,216,216,1) 0%,rgba(165,165,165,1) 45%,rgba(124,124,124,1) 100%); /* Chrome10-25,Safari5.1-6 */
+        background: linear-gradient(to bottom, rgba(216,216,216,1) 0%,rgba(165,165,165,1) 45%,rgba(124,124,124,1) 100%);
+    }
+    #stats label {
+        font-weight: 700;
+        margin-left: 10px;
+    }
+    #stats output {
+        background-color: #000;
+        color: #fff;
+        padding: 5px 10px;
+        border-radius: 2px;
+        margin: 5px;
+        font-size: 22px;
+        color: red;
+        font-family: 'Press Start 2P', cursive;
+    }
+    button.selected#stop_car {
+        background: rgb(181,0,0);
+        background: -moz-linear-gradient(top, rgba(181,0,0,1) 0%, rgba(117,3,0,1) 45%, rgba(79,0,0,1) 100%);
+        background: -webkit-linear-gradient(top, rgba(181,0,0,1) 0%,rgba(117,3,0,1) 45%,rgba(79,0,0,1) 100%);
+        background: linear-gradient(to bottom, rgba(181,0,0,1) 0%,rgba(117,3,0,1) 45%,rgba(79,0,0,1) 100%);
+        color: #fff;
+    }
+    button.selected#start_car {
+         background: rgb(0,188,9); /* Old browsers */
+        background: -moz-linear-gradient(top, rgba(0,188,9,1) 0%, rgba(0,117,7,1) 45%, rgba(8,51,0,1) 100%); /* FF3.6-15 */
+        background: -webkit-linear-gradient(top, rgba(0,188,9,1) 0%,rgba(0,117,7,1) 45%,rgba(8,51,0,1) 100%); /* Chrome10-25,Safari5.1-6 */
+        background: linear-gradient(to bottom, rgba(0,188,9,1) 0%,rgba(0,117,7,1) 45%,rgba(8,51,0,1) 100%);
+        color: #fff;       
     }
     </style>
 </head>
@@ -59,7 +124,7 @@
     </div>
 
     <button id='start_car'>ON</button>
-    <button id='stop_car'>OFF</button>
+    <button id='stop_car' class="selected">OFF</button>
     <button id='drive_car'>DRIVE</button>
     <button id='refuel'>REFUEL</button>
 </div>
@@ -83,6 +148,8 @@ var car = {
         }else{
             car.on = true;
             car.off = false;
+            $('#stop_car').removeClass('selected');
+            $('#start_car').addClass('selected');
         }
     },
     stopCar: function(){
@@ -91,12 +158,15 @@ var car = {
         }else{
             car.off = true;
             car.on = false;
+            $('#stop_car').addClass('selected');
+            $('#start_car').removeClass('selected');
         }
     },
     driveCar: function(){ 
-        var num = Math.floor(document.getElementById('distance').value);
+        var val = document.getElementById('distance').value;
+        var num = Math.floor(val);
         var km = (num*16.5)/100;
-        if(km < car.fuel_level && car.on){
+        if((km < car.fuel_level && val > 0) && car.on){
             console.log(km);
             car.fuel_level =  car.fuel_level - km;
             car.km_driven = car.km_driven + num; 
@@ -107,6 +177,8 @@ var car = {
             window.alert('The car is off, you must turn it on before you can start driving!');
         }else if(km > car.fuel_level){
             window.alert('You need more fuel to travel the distance entered. Refuel first, or try a lesser distance.');
+        }else if(val == 0){
+            window.alert('Enter the distance you\'d like to drive first.');
         }
     },
     refuel: function(){
