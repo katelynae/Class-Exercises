@@ -11,6 +11,7 @@
         body{
             background-color: #e6b3b3;
             font-size: 16px;
+            font-family: Georgia;
         }
         .container {
             display: flex;
@@ -26,8 +27,19 @@
         }
         #booking_form {
             display: flex;
-            flex-direction: column;
             text-align: center;
+        }
+        #hotel_stats {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 10px 20px;
+        }
+        #reservations {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 10px 20px;
         }
         label {
             margin: 5px 0;
@@ -35,6 +47,33 @@
         }
         .button_group{
             margin: 10px 0;
+        }
+        button {
+          background: #d9343c;
+          background-image: -webkit-linear-gradient(top, #d9343c, #b82b32);
+          background-image: -moz-linear-gradient(top, #d9343c, #b82b32);
+          background-image: -ms-linear-gradient(top, #d9343c, #b82b32);
+          background-image: -o-linear-gradient(top, #d9343c, #b82b32);
+          background-image: linear-gradient(to bottom, #d9343c, #b82b32);
+          -webkit-border-radius: 28;
+          -moz-border-radius: 28;
+          border-radius: 28px;
+          font-family: Georgia;
+          color: #ffffff;
+          font-size: 16px;
+          padding: 10px 20px 10px 20px;
+          text-decoration: none;
+          border: none;
+        }
+
+        button:hover {
+          background: #fc3c3c;
+          background-image: -webkit-linear-gradient(top, #fc3c3c, #d93434);
+          background-image: -moz-linear-gradient(top, #fc3c3c, #d93434);
+          background-image: -ms-linear-gradient(top, #fc3c3c, #d93434);
+          background-image: -o-linear-gradient(top, #fc3c3c, #d93434);
+          background-image: linear-gradient(to bottom, #fc3c3c, #d93434);
+          text-decoration: none;
         }
     </style>
 </head>
@@ -46,28 +85,32 @@
     <h2>Bookings:</h2>
 
     <div id='booking_form'>
-        <label for='hotels'>Select your hotel</label>
-        <select id='hotels'>
-          <option id='hotel1' selected>The Overlook Hotel</option>
-        </select>
 
-        <label for='rooms_left'>Rooms Remaining</label>
-        <output id='rooms_left'></output>
+        <div id="hotel_stats">
+            <label for='rooms_left'>Rooms Remaining</label>
+            <output id='rooms_left'></output>
+            <label for='rooms_booked'>Rooms Reserved</label>
+            <output id='rooms_booked'></output>
+        </div>
 
-        <label for='rooms_booked'>Rooms Reserved</label>
-        <output id='rooms_booked'></output>
+        <div id="reservations">
+            <label for='hotels'>Select your hotel</label>
+            <select id='hotels'>
+              <option id='hotel1' selected>The Overlook Hotel</option>
+            </select>
 
-        <label for='rooms'>Select no. of rooms</label>
-          <select id='rooms'>
-            <option value='1' >1</option>
-            <option value='2'>2</option>
-            <option value='3'>3</option>
-            <option value='4'>4</option>
-            <option value='5'>5</option>
-          </select>
-        <div class='button_group'>
-            <button id='reserve_rooms'>Reserve Rooms</button>
-            <button id='unreserve_rooms'>Unreserve Rooms</button>
+            <label for='rooms'>Select no. of rooms</label>
+              <select id='rooms'>
+                <option value='1' >1</option>
+                <option value='2'>2</option>
+                <option value='3'>3</option>
+                <option value='4'>4</option>
+                <option value='5'>5</option>
+              </select>
+            <div class='button_group'>
+                <button id='reserve_rooms'>Reserve Rooms</button>
+                <button id='unreserve_rooms'>Unreserve Rooms</button>
+            </div>
         </div>
     </div>
 
