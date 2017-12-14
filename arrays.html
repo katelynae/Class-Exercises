@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Arrays</title>
+</head>
+<body>
+    
+</body>
+
+<script>
+    var numbers = [
+        2,
+        6,
+        8,
+        5,
+        7,
+        3,
+        4
+    ];
+
+    console.log(numbers);
+    console.log(numbers.sort());
+    console.log(numbers.reverse());
+    var double = numbers.map(function(x){
+        return x * 2;
+    });
+    console.log(double);
+    var singleDigits = double.filter(function(y){
+        return y < 10;
+    });
+    console.log(singleDigits);
+
+    singleDigits.forEach(function(element){
+        console.log(element);
+    });
+
+    var letters = [
+        'b',
+        'd',
+        'a',
+        'c',
+        'e'
+    ]
+
+    console.log(letters);
+    console.log(letters.sort());
+    console.log(letters.reverse());
+</script>
+
+</html>
