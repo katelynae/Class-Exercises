@@ -309,6 +309,7 @@ document.getElementById('confirm_purchase').addEventListener('click', confirmCar
 document.getElementById('confirm_details').addEventListener('click', function(){
     $('#confirmation_box').addClass('hidden');
     $('#cloned_details').empty();
+    $('#payment_form').find('input, select').val('');
     window.alert('Your details have been confirmed. Thank you for your purchase.');
 });
 
