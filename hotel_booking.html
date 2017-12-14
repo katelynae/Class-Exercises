@@ -28,18 +28,7 @@
         #booking_form {
             display: flex;
             text-align: center;
-        }
-        #hotel_stats {
-            display: flex;
             flex-direction: column;
-            align-items: center;
-            margin: 10px 20px;
-        }
-        #reservations {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            margin: 10px 20px;
         }
         label {
             margin: 5px 0;
@@ -86,18 +75,17 @@
 
     <div id='booking_form'>
 
-        <div id="hotel_stats">
-            <label for='rooms_left'>Rooms Remaining</label>
-            <output id='rooms_left'></output>
-            <label for='rooms_booked'>Rooms Reserved</label>
-            <output id='rooms_booked'></output>
-        </div>
 
-        <div id="reservations">
             <label for='hotels'>Select your hotel</label>
             <select id='hotels'>
               <option id='hotel1' selected>The Overlook Hotel</option>
             </select>
+            
+            <label for='rooms_left'>Rooms Remaining</label>
+            <output id='rooms_left'></output>
+            <label for='rooms_booked'>Rooms Reserved</label>
+            <output id='rooms_booked'></output>
+
 
             <label for='rooms'>Select no. of rooms</label>
               <select id='rooms'>
@@ -111,7 +99,7 @@
                 <button id='reserve_rooms'>Reserve Rooms</button>
                 <button id='unreserve_rooms'>Unreserve Rooms</button>
             </div>
-        </div>
+
     </div>
 
 </div>
